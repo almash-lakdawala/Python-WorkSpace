@@ -10,3 +10,12 @@ if year % 4 == 0:
         print(year, "is a leap year.")
 else:
     print(year, "is not a leap year.")
+
+
+
+string = "hello, world"
+char = "w"
+if char in string:
+        print("The string contains the character", char)
+else:
+        print("The string does not contain the character", char)
