@@ -1,7 +1,3 @@
-print("hello world")
-
-def chai(n):
-    print(n)
-
-
-chai("lemon ")
+n = 5
+res = ((n * (n + 1)) // 2) ** 2
+print(res)
