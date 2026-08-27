@@ -1,3 +1,11 @@
-from day1 import chai
+n, m = 4, 3
+a, b, count = 0, 1, 0
 
-chai("coffee")
+while True:
+    a, b = b, a + b
+    if b % m == 0:
+        count += 1
+        if count == n:
+            print(b)
+            break
+
