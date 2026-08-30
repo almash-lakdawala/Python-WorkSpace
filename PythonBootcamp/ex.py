@@ -12,3 +12,7 @@ mm = 11    # month
 
 # display the calendar
 print(calendar.month(yy, mm))
+a = [5, -3, 7, -1, 2, -9, 4]
+
+n = [num for num in a if num < 0]
+print(n)
