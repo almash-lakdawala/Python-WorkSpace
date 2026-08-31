@@ -1,18 +1,30 @@
-# Program to display calendar of the given month and year
+class Car:
+  def __init__(self, brand, model):
+    self.brand = brand
+    self.model = model
 
-# importing calendar module
-import calendar
+  def move(self):
+    print("Drive!")
 
-yy = 2014  # year
-mm = 11    # month
+class Boat:
+  def __init__(self, brand, model):
+    self.brand = brand
+    self.model = model
 
-# To take month and year input from the user
-# yy = int(input("Enter year: "))
-# mm = int(input("Enter month: "))
+  def move(self):
+    print("Sail!")
 
-# display the calendar
-print(calendar.month(yy, mm))
-a = [5, -3, 7, -1, 2, -9, 4]
+class Plane:
+  def __init__(self, brand, model):
+    self.brand = brand
+    self.model = model
 
-n = [num for num in a if num < 0]
-print(n)
+  def move(self):
+    print("Fly!")
+
+car1 = Car("Ford", "Mustang")       #Create a Car object
+boat1 = Boat("Ibiza", "Touring 20") #Create a Boat object
+plane1 = Plane("Boeing", "747")     #Create a Plane object
+
+for x in (car1, boat1, plane1):
+  x.move()
