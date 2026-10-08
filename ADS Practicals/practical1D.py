@@ -1,98 +1,119 @@
-# Queue Implementation Using Linked List in Python
-
-# Node class
 class Node:
+
     def __init__(self, data):
         self.data = data
         self.next = None
 
 
-# Queue class
 class Queue:
+
     def __init__(self):
         self.front = None
         self.rear = None
+        self.count = 0
 
     # Enqueue operation
-    def enqueue(self, data):
-        new_node = Node(data)
+    def enqueue(self, item):
+        new_node = Node(item)
 
-        # If queue is empty
-        if self.rear is None:
+        if self.is_empty():
             self.front = self.rear = new_node
         else:
             self.rear.next = new_node
             self.rear = new_node
 
-        print(data, "inserted into queue.")
+        self.count += 1
+        print(item, "enqueued into queue")
 
     # Dequeue operation
     def dequeue(self):
-        if self.front is None:
-            print("Queue Underflow! Queue is empty.")
+        if self.is_empty():
+            print("Queue Underflow! Queue is empty")
             return
 
-        temp = self.front
+        item = self.front.data
         self.front = self.front.next
 
-        # If queue becomes empty
         if self.front is None:
             self.rear = None
 
-        print(temp.data, "deleted from queue.")
+        self.count -= 1
+        print(item, "dequeued from queue")
 
     # Peek operation
     def peek(self):
-        if self.front is None:
-            print("Queue is empty.")
+        if self.is_empty():
+            print("Queue is empty")
         else:
-            print("Front element is:", self.front.data)
+            print("Front element:", self.front.data)
 
-    # Display operation
+    # Check if queue is empty
+    def is_empty(self):
+        return self.front is None
+
+    # Return queue size
+    def size(self):
+        return self.count
+
+    # Display queue
     def display(self):
-        if self.front is None:
-            print("Queue is empty.")
+        if self.is_empty():
+            print("Queue is empty")
             return
+
+        print("Queue elements:")
 
         temp = self.front
 
-        print("Queue elements are:")
-        while temp is not None:
+        while temp:
             print(temp.data, end=" ")
             temp = temp.next
 
         print()
 
 
-# Main program
-queue = Queue()
+# Driver Program
+
+q = Queue()
 
 while True:
-    print("\n----- QUEUE USING LINKED LIST -----")
+
+    print("\nName: Almash Lakdawala")
+    print("Enrollment: 26PG030052")
+
+    print("\n--- Linked List Queue Menu ---")
     print("1. Enqueue")
     print("2. Dequeue")
     print("3. Peek")
-    print("4. Display")
-    print("5. Exit")
+    print("4. Check if Empty")
+    print("5. Size")
+    print("6. Display")
+    print("7. Exit")
 
     choice = int(input("Enter your choice: "))
 
     if choice == 1:
-        value = int(input("Enter value to insert: "))
-        queue.enqueue(value)
+        item = int(input("Enter element: "))
+        q.enqueue(item)
 
     elif choice == 2:
-        queue.dequeue()
+        q.dequeue()
 
     elif choice == 3:
-        queue.peek()
+        q.peek()
 
     elif choice == 4:
-        queue.display()
+        print("Queue is Empty" if q.is_empty() else "Queue is Not Empty")
 
     elif choice == 5:
-        print("Program terminated.")
+        print("Queue Size:", q.size())
+
+    elif choice == 6:
+        q.display()
+
+    elif choice == 7:
+        print("Exiting...")
         break
 
     else:
-        print("Invalid choice! Please try again.")
+        print("Invalid Choice!")

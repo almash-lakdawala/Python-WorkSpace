@@ -1,102 +1,112 @@
-# Practical 6: Single Threaded Binary Search Tree
-
-# Node class
-class Node:
+class ThreadedNode:
 
     def __init__(self, data):
         self.data = data
         self.left = None
         self.right = None
-        self.thread = False
+
+        # True  -> right pointer is a thread
+        # False -> right pointer is a child
+        self.rightThread = False
 
 
-# Single Threaded BST class
-class SingleThreadedBST:
+class ThreadedBST:
 
     def __init__(self):
         self.root = None
 
-    # Insert a node
+    # -------------------------
+    # INSERTION
+    # -------------------------
     def insert(self, data):
 
-        new_node = Node(data)
+        new_node = ThreadedNode(data)
 
         if self.root is None:
             self.root = new_node
             return
 
         current = self.root
-        parent = None
 
-        while current:
-
-            parent = current
+        while True:
 
             if data < current.data:
 
                 if current.left is None:
-                    break
 
-                current = current.left
+                    new_node.right = current
+                    new_node.rightThread = True
+
+                    current.left = new_node
+                    return
+
+                else:
+                    current = current.left
 
             elif data > current.data:
 
-                if current.thread or current.right is None:
-                    break
+                if current.right is None or current.rightThread:
 
-                current = current.right
+                    new_node.right = current.right
+                    new_node.rightThread = current.rightThread
+
+                    current.right = new_node
+                    current.rightThread = False
+
+                    return
+
+                else:
+                    current = current.right
 
             else:
-                print("Duplicate value not allowed.")
+                print("Duplicate value not allowed")
                 return
 
-        if data < parent.data:
-
-            parent.left = new_node
-            new_node.right = parent
-            new_node.thread = True
-
-        else:
-
-            new_node.right = parent.right
-            new_node.thread = True
-
-            parent.right = new_node
-            parent.thread = False
-
-    # Leftmost node
+    # -------------------------
+    # FIND LEFTMOST NODE
+    # -------------------------
     def leftmost(self, node):
 
-        while node and node.left:
+        if node is None:
+            return None
+
+        while node.left is not None:
             node = node.left
 
         return node
 
-    # Inorder Traversal
+    # -------------------------
+    # THREADED INORDER
+    # -------------------------
     def inorder(self):
 
         current = self.leftmost(self.root)
 
-        while current:
+        while current is not None:
 
             print(current.data, end=" ")
 
-            if current.thread:
+            if current.rightThread:
                 current = current.right
             else:
                 current = self.leftmost(current.right)
 
-        print()
 
+# -------------------------
+# PROGRAM
+# -------------------------
 
-# Driver Code
-tree = SingleThreadedBST()
+print("Name: Almash Lakdawala")
+print("Enrollment: 26PG030052")
 
-n = int(input("Enter number of nodes: "))
+tree = ThreadedBST()
 
-for i in range(n):
-    value = int(input("Enter value: "))
+values = [50, 30, 70, 20, 40, 60, 80]
+
+for value in values:
     tree.insert(value)
 
-print("\nInorder Traversal:")
+print("\nRight Threaded BST Inorder Traversal:")
 tree.inorder()
+
+print()

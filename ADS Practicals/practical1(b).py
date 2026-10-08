@@ -1,142 +1,106 @@
-"""
-Practical 1(b): Stack Implementation using Linked List
-
-Objective:
-To implement the Stack data structure using a Linked List
-and perform the following operations:
-1. Push
-2. Pop
-3. Peek
-4. is_empty
-5. Size
-6. Display
-
-Theory:
-A Stack is a linear data structure that follows the LIFO
-(Last In First Out) principle.
-
-In a Linked List implementation, each element is stored in a node.
-Each node contains:
-1. Data
-2. Address of the next node
-
-The 'top' pointer always points to the first node of the linked list.
-Insertion and deletion are performed at the beginning of the list,
-making both operations O(1).
-"""
-
-
-# Node class represents each element of the linked list
 class Node:
 
-    # Constructor to initialize node with data
     def __init__(self, data):
-        self.data = data          # Store the data
-        self.next = None          # Pointer to the next node
+        self.data = data
+        self.next = None
 
 
-# Stack class using Linked List
 class Stack:
 
-    # Constructor to initialize an empty stack
     def __init__(self):
-        self.top = None           # Top pointer
-        self.count = 0            # Counter to keep track of stack size
+        self.top = None
+        self.count = 0
 
-    # Push operation: Insert a new node at the beginning
+    # Push operation
     def push(self, item):
-
-        # Create a new node
         new_node = Node(item)
-
-        # New node points to current top
         new_node.next = self.top
-
-        # Update top pointer
         self.top = new_node
-
-        # Increase stack size
         self.count += 1
+        print(item, "pushed into stack")
 
-    # Pop operation: Remove and return the top node
+    # Pop operation
     def pop(self):
-
-        # Check if stack is empty
         if self.is_empty():
-            print("Stack Underflow")
-            return None
+            print("Stack Underflow! Stack is empty")
+        else:
+            popped = self.top.data
+            self.top = self.top.next
+            self.count -= 1
+            print(popped, "popped from stack")
 
-        # Store the top node temporarily
-        temp = self.top
-
-        # Move top pointer to next node
-        self.top = self.top.next
-
-        # Decrease stack size
-        self.count -= 1
-
-        # Return deleted data
-        return temp.data
-
-    # Peek operation: Return the top element without removing it
+    # Peek operation
     def peek(self):
-
         if self.is_empty():
-            return None
+            print("Stack is empty")
+        else:
+            print("Top element:", self.top.data)
 
-        return self.top.data
-
-    # Check whether the stack is empty
+    # Check if stack is empty
     def is_empty(self):
-
         return self.top is None
 
-    # Return the total number of elements
+    # Return size of stack
     def size(self):
-
         return self.count
 
-    # Display stack elements from top to bottom
+    # Display stack
     def display(self):
-
         if self.is_empty():
+            print("Stack is empty")
+        else:
+            print("Stack elements (Top to Bottom):")
+            temp = self.top
+
+            while temp:
+                print(temp.data)
+                temp = temp.next
+
+
+# Driver Program
+s = Stack()
+
+while True:
+
+    print("\nName: Almash Lakdawala")
+    print("Enrollment: 26PG030052")
+
+    print("\n--- Stack Menu ---")
+    print("1. Push")
+    print("2. Pop")
+    print("3. Peek")
+    print("4. Check if Empty")
+    print("5. Size")
+    print("6. Display")
+    print("7. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        item = int(input("Enter element to push: "))
+        s.push(item)
+
+    elif choice == 2:
+        s.pop()
+
+    elif choice == 3:
+        s.peek()
+
+    elif choice == 4:
+        if s.is_empty():
             print("Stack is Empty")
-            return
+        else:
+            print("Stack is Not Empty")
 
-        print("Stack (Top to Bottom):")
+    elif choice == 5:
+        print("Stack Size:", s.size())
 
-        temp = self.top
+    elif choice == 6:
+        s.display()
 
-        # Traverse the linked list
-        while temp:
-            print(temp.data)
-            temp = temp.next
+    elif choice == 7:
+        print("Exiting...")
+        break
 
-
-# ---------------- Driver Code ----------------
-
-# Create a Stack object
-stack = Stack()
-
-# Push elements into the stack
-stack.push(10)
-stack.push(20)
-stack.push(30)
-
-# Display stack
-stack.display()
-
-# Display top element
-print("Top:", stack.peek())
-
-# Display stack size
-print("Size:", stack.size())
-
-# Remove top element
-print("Removed:", stack.pop())
-
-# Display updated stack
-stack.display()
-
-# Check whether stack is empty
-print("Is Empty:", stack.is_empty())
+    else:
+        print("Invalid Choice! Please try again.")

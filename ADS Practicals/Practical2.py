@@ -1,11 +1,3 @@
-# Practical 5(a): Binary Search Tree (BST) Insertion
-# Binary Search Tree (BST) follows the following rules:
-# 1. Left child contains smaller value than the parent node.
-# 2. Right child contains greater value than the parent node.
-# 3. Duplicate values are not allowed.
-
-
-# Node class
 class Node:
 
     def __init__(self, data):
@@ -14,141 +6,147 @@ class Node:
         self.right = None
 
 
-# BST class
-class BinarySearchTree:
+class BST:
 
     def __init__(self):
         self.root = None
 
-    # Insert a new node
-    def insert(self, data):
+    # Insert
+    def insert(self, root, data):
+        if root is None:
+            return Node(data)
 
-        if self.root is None:
-            self.root = Node(data)
-        else:
-            self.insert_node(self.root, data)
+        if data < root.data:
+            root.left = self.insert(root.left, data)
 
-    # Recursive insertion
-    def insert_node(self, current, data):
+        elif data > root.data:
+            root.right = self.insert(root.right, data)
 
-        if data < current.data:
+        return root
 
-            if current.left is None:
-                current.left = Node(data)
-            else:
-                self.insert_node(current.left, data)
-
-        elif data > current.data:
-
-            if current.right is None:
-                current.right = Node(data)
-            else:
-                self.insert_node(current.right, data)
-
-        else:
-            print("Duplicate values are not allowed.")
-
-    # Search an element
-    def search(self, data):
-
-        if self.search_node(self.root, data):
-            print(data, "found in BST.")
-        else:
-            print(data, "not found in BST.")
-
-    # Recursive search
-    def search_node(self, current, data):
-
-        if current is None:
+    # Search
+    def search(self, root, key):
+        if root is None:
             return False
 
-        if current.data == data:
+        if root.data == key:
             return True
 
-        elif data < current.data:
-            return self.search_node(current.left, data)
+        if key < root.data:
+            return self.search(root.left, key)
 
-        else:
-            return self.search_node(current.right, data)
+        return self.search(root.right, key)
 
-    # Delete a node
-    def delete(self, data):
-
-        self.root = self.delete_node(self.root, data)
-
-    # Recursive deletion
-    def delete_node(self, current, data):
-
-        if current is None:
-            return current
-
-        if data < current.data:
-            current.left = self.delete_node(current.left, data)
-
-        elif data > current.data:
-            current.right = self.delete_node(current.right, data)
-
-        else:
-
-            # Node with no left child
-            if current.left is None:
-                return current.right
-
-            # Node with no right child
-            elif current.right is None:
-                return current.left
-
-            # Node with two children
-            temp = self.find_min(current.right)
-            current.data = temp.data
-            current.right = self.delete_node(current.right, temp.data)
-
-        return current
-
-    # Find minimum node
-    def find_min(self, current):
+    # Find minimum
+    def minimum(self, root):
+        current = root
 
         while current.left is not None:
             current = current.left
 
         return current
 
-    # Inorder Traversal
-    def inorder(self):
+    # Delete
+    def delete(self, root, key):
 
-        self.inorder_traversal(self.root)
-        print()
+        if root is None:
+            return root
 
-    # Recursive inorder traversal
-    def inorder_traversal(self, node):
+        if key < root.data:
+            root.left = self.delete(root.left, key)
 
-        if node is not None:
+        elif key > root.data:
+            root.right = self.delete(root.right, key)
 
-            self.inorder_traversal(node.left)
-            print(node.data, end=" ")
-            self.inorder_traversal(node.right)
+        else:
+
+            # No child
+            if root.left is None and root.right is None:
+                return None
+
+            # Only right child
+            if root.left is None:
+                return root.right
+
+            # Only left child
+            if root.right is None:
+                return root.left
+
+            # Two children
+            temp = self.minimum(root.right)
+            root.data = temp.data
+            root.right = self.delete(root.right, temp.data)
+
+        return root
+
+    # Inorder
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.data, end=" ")
+
+    # Preorder
+    def preorder(self, root):
+        if root:
+            print(root.data, end=" ")
+            self.preorder(root.left)
+            self.preorder(root.right)
+
+    # Postorder
+    def postorder(self, root):
+        if root:
+            self.postorder(root.left)
+            self.postorder(root.right)
+            print(root.data, end=" ")
 
 
-# ---------------- Driver Code ----------------
+# PROGRAM
 
-bst = BinarySearchTree()
+print("Name: Almash Lakdawala")
+print("Enrollment: 26PG030052")
 
-n = int(input("Enter number of nodes: "))
+bst = BST()
 
-for i in range(n):
-    value = int(input("Enter value: "))
-    bst.insert(value)
+values = [50, 30, 70, 20, 40, 60, 80]
 
+# Insert values
+for value in values:
+    bst.root = bst.insert(bst.root, value)
+
+
+# Inorder Traversal
 print("\nInorder Traversal:")
-bst.inorder()
+bst.inorder(bst.root)
+
+
+# Preorder Traversal
+print("\nPreorder Traversal:")
+bst.preorder(bst.root)
+
+
+# Postorder Traversal
+print("\nPostorder Traversal:")
+bst.postorder(bst.root)
+
 
 # Search
-value = int(input("\nEnter value to search: "))
-bst.search(value)
+key = 40
+
+print("\n\nSearching for:", key)
+
+if bst.search(bst.root, key):
+    print("Element found")
+else:
+    print("Element not found")
+
 
 # Delete
-value = int(input("\nEnter value to delete: "))
-bst.delete(value)
+delete_value = 30
 
-print("\nBST after deletion:")
-bst.inorder()
+print("\nBefore deletion:")
+bst.inorder(bst.root)
+
+bst.root = bst.delete(bst.root, delete_value)
+
+print("\nAfter deleting", delete_value, ":")
+bst.inorder(bst.root)

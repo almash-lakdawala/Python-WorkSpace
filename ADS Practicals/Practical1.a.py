@@ -1,95 +1,109 @@
-# Practical 1(a): Stack Implementation using Array (Python List)
-"""
-Practical 1(a): Stack Implementation using Array
-
-Objective:
-To implement the Stack data structure using a Python list (Array)
-and perform the following operations:
-1. Push
-2. Pop
-3. Peek
-4. is_empty
-5. Size
-6. Display
-
-Theory:
-A Stack is a linear data structure that follows the LIFO
-(Last In First Out) principle.
-"""
-# The last element inserted into the stack is the first one to be removed.
-
 class Stack:
 
-    # Constructor to initialize an empty stack
-    def __init__(self):
-        self.items = []      # Python list is used as an array to store stack elements
+    def __init__(self, capacity):
+        self.stack = []
+        self.capacity = capacity
 
-    # Push operation: Insert an element at the top of the stack
+    # Push Operation
     def push(self, item):
-        self.items.append(item)
-
-    # Pop operation: Remove and return the top element of the stack
-    def pop(self):
-        # Check if the stack is empty
-        if self.is_empty():
-            print("Stack Underflow")
-            return None
-
-        # Remove and return the last element
-        return self.items.pop()
-
-    # Peek operation: Return the top element without removing it
-    def peek(self):
-        if self.is_empty():
-            return None
-
-        return self.items[-1]
-
-    # Check whether the stack is empty
-    def is_empty(self):
-        return len(self.items) == 0
-
-    # Return the total number of elements in the stack
-    def size(self):
-        return len(self.items)
-
-    # Display all stack elements from top to bottom
-    def display(self):
-        if self.is_empty():
-            print("Stack is Empty")
+        if self.isFull():
+            print("Stack is full. Cannot push item.")
         else:
-            print("Stack (Top to Bottom):")
+            self.stack.append(item)
+            print(f"Pushed {item} to stack.")
 
-            # Print elements in reverse order because
-            # the last inserted element is the top of the stack
-            for item in reversed(self.items):
-                print(item)
+    # Pop Operation
+    def pop(self):
+        if self.isEmpty():
+            print("Stack is empty. Cannot pop item.")
+            return None
+        else:
+            item = self.stack.pop()
+            print(f"Popped {item} from stack.")
+            return item
+
+    # Peek Operation
+    def peek(self):
+        if self.isEmpty():
+            print("Stack is empty. Cannot peek.")
+            return None
+        else:
+            item = self.stack[-1]
+            print(f"Top item is {item}.")
+            return item
+
+    # Check if stack is empty
+    def isEmpty(self):
+        return len(self.stack) == 0
+
+    # Check if stack is full
+    def isFull(self):
+        return len(self.stack) == self.capacity
+
+    # Get the size of the stack
+    def size(self):
+        return len(self.stack)
+
+    # Display the stack
+    def display(self):
+        if self.isEmpty():
+            print("Stack is empty.")
+        else:
+            print("Stack contents:", self.stack)
 
 
-# ---------------- Driver Code ----------------
+# Main Program
+capacity = int(input("Enter the capacity of the stack: "))
+stack = Stack(capacity)
 
-# Create an object of Stack class
-stack = Stack()
+while True:
 
-# Push elements into the stack
-stack.push(10)
-stack.push(20)
-stack.push(30)
+    print("\nName: YNVS BHASKARA SASTRY")
+    print("Enrollment: 26PG030109")
 
-# Display all stack elements
-stack.display()
+    print("\nStack Operations:")
+    print("1. Push")
+    print("2. Pop")
+    print("3. Peek")
+    print("4. Check if stack is empty")
+    print("5. Check if stack is full")
+    print("6. Get size of stack")
+    print("7. Display stack contents")
+    print("8. Exit")
 
-# Display the top element
-print("Top:", stack.peek())
+    choice = input("Enter your choice (1-8): ")
 
-# Display the total number of elements
-print("Size:", stack.size())
+    if choice == '1':
+        item = input("Enter item to push: ")
+        stack.push(item)
 
-# Remove the top element
-print("Removed:", stack.pop())
+    elif choice == '2':
+        stack.pop()
 
-# Display stack after pop operation
-stack.display()
+    elif choice == '3':
+        stack.peek()
 
-# Check whether the stack is empty
-print("Is Empty:", stack.is_empty())
+    elif choice == '4':
+        if stack.isEmpty():
+            print("Stack is empty.")
+        else:
+            print("Stack is not empty.")
+
+    elif choice == '5':
+        if stack.isFull():
+            print("Stack is full.")
+        else:
+            print("Stack is not full.")
+
+    elif choice == '6':
+        print(f"Size of stack: {stack.size()}")
+
+    elif choice == '7':
+        stack.display()
+
+    elif choice == '8':
+        print("Exiting...")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
