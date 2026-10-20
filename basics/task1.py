@@ -1,71 +1,80 @@
-# name = "almash"
-# age = 25
-# print("Hello " + name + " age is " + str(age))
+
+import heapq
 
 
-#The f before the string = formatted string
-#Anything inside {} gets replaced by the variable’s value
-# print(f"Hello {name}, age is {age}")
+class WeightedGraph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v, weight):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+
+        self.graph[u].append((v, weight))
+        self.graph[v].append((u, weight))
+
+    def dijkstra(self, source):
+        if source not in self.graph:
+            print("Source vertex not found")
+            return {}
+
+        distance = {
+            vertex: float("inf")
+            for vertex in self.graph
+        }
+
+        distance[source] = 0
+        priority_queue = [(0, source)]
+
+        while priority_queue:
+            current_distance, current_vertex = (
+                heapq.heappop(priority_queue)
+            )
+
+            if current_distance > distance[current_vertex]:
+                continue
+
+            for neighbour, weight in self.graph[current_vertex]:
+                new_distance = current_distance + weight
+
+                if new_distance < distance[neighbour]:
+                    distance[neighbour] = new_distance
+
+                    heapq.heappush(
+                        priority_queue,
+                        (new_distance, neighbour)
+                    )
+
+        return distance
 
 
-#{} are placeholders
-#.format(name, age) fills them in order
-# print("Hello {}, age is {}".format(name, age))
+# Student Details
+print("Name: Almash Lakdawala")
+print("Enrollment No.: 26PG030052")
 
+# Create weighted graph
+g = WeightedGraph()
 
-#the following code is alow us to take input from user
-# name = input("What is your name ? ")
-# print("Hello "+ name)
+edges = [
+    (0, 1, 4),
+    (0, 2, 2),
+    (1, 2, 1),
+    (1, 3, 5),
+    (2, 3, 8),
+    (2, 4, 10),
+    (3, 4, 2)
+]
 
+for u, v, weight in edges:
+    g.add_edge(u, v, weight)
 
-#type checking or conversion
-# birth_year = input("Enter your birth year: ")
-# age = 2026 - int(birth_year)
-# print(age)
+# Find shortest distances
+source = 0
+shortest_distances = g.dijkstra(source)
 
-# num1 = input("Enter value of num1: ")
-# num2 = input("Enter value of num2: ")
-# sum = num1 + num2
-# print(f"The sum of num1 and num2 is: {sum} ")
+print("\nShortest distances from vertex", source)
 
-
-course = "Python for Beginners"
-
-print(course.upper())
-
-stack = []
-
-while True:
-
-    print("\n1.Push")
-    print("2.Pop")
-    print("3.Peek")
-    print("4.Display")
-    print("5.Exit")
-
-    choice = int(input("Enter choice: "))
-
-    if choice == 1:
-        value = int(input("Enter value: "))
-        stack.append(value)
-
-    elif choice == 2:
-        if len(stack) == 0:
-            print("Stack Underflow")
-        else:
-            print("Deleted:", stack.pop())
-
-    elif choice == 3:
-        if len(stack) == 0:
-            print("Stack Empty")
-        else:
-            print("Top =", stack[-1])
-
-    elif choice == 4:
-        print(stack)
-
-    elif choice == 5:
-        break
-
-    else:
-        print("Invalid Choice")
+for vertex, distance in sorted(shortest_distances.items()):
+    print("Vertex", vertex, ":", distance)
